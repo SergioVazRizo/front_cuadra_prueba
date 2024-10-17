@@ -20,9 +20,9 @@ async function iniciarSesion() {
 
     try {
         const response = await fetch(API_BASE_URL + '/login', {
-            method: 'POST',
+            method: 'POST', // Cambia 'OPTIONS' a 'POST'
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ nombreUsuario, contrasena, claveUnica})
+            body: JSON.stringify({ nombreUsuario, contrasena, claveUnica })
         });
 
         const data = await handleResponse(response);
@@ -87,7 +87,6 @@ async function registrarUsuario() {
 
 // --- Funciones del Dashboard --- 
 
-// --- Obtener los datos del usuario ---
 // --- Obtener los datos del usuario ---
 async function obtenerDatosUsuario(token) {
     const idUsuario = localStorage.getItem('idUsuario'); // Obtener el id del usuario
