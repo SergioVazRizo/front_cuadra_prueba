@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:8081/api/usuarios";
+    const API_BASE_URL = "http://localhost:8081/api/usuarios";
 
 // Función para manejar las respuestas del backend
 async function handleResponse(response) {
@@ -21,8 +21,8 @@ async function iniciarSesion() {
     try {
         const response = await fetch(API_BASE_URL + '/login', {
             method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: `nombreUsuario=${nombreUsuario}&contrasena=${contrasena}&claveUnica=${claveUnica}`
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ nombreUsuario, contrasena, claveUnica})
         });
 
         const data = await handleResponse(response);
