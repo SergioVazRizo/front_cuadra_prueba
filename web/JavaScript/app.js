@@ -12,7 +12,7 @@ async function handleResponse(response) {
 
 // --- Funciones de Autenticación ---
 
-// Función para el inicio de sesión
+// --- Función para el inicio de sesión ---
 async function iniciarSesion() {
     const nombreUsuario = document.getElementById('nombreUsuario').value;
     const contrasena = document.getElementById('contrasena').value;
@@ -27,8 +27,9 @@ async function iniciarSesion() {
 
         const data = await handleResponse(response);
 
-        // Guardar el token en el localStorage 
+        // Guardar el token y el ID del usuario en el localStorage
         localStorage.setItem('token', data.token);
+        localStorage.setItem('idUsuario', data.id); // Asegúrate de que este sea el ID correcto
 
         // Redirigir al dashboard
         window.location.href = "HTML/dashboard.html";
@@ -86,13 +87,23 @@ async function registrarUsuario() {
 
 // --- Funciones del Dashboard --- 
 
-// Obtener los datos del usuario 
+// --- Obtener los datos del usuario ---
+// --- Obtener los datos del usuario ---
 async function obtenerDatosUsuario(token) {
+    const idUsuario = localStorage.getItem('idUsuario'); // Obtener el id del usuario
+
+    if (!token) {
+        console.warn("No hay token, mostrando datos predeterminados.");
+        // Aquí puedes asignar valores predeterminados si lo deseas
+        document.getElementById('usuarioNombre').textContent = "Usuario sin datos"; // Mensaje si no hay token
+        return; // Salimos de la función si no hay token
+    }
+
     try {
-        const response = await fetch(API_BASE_URL + '/perfil', {
+        const response = await fetch(`${API_BASE_URL}/perfil/${idUsuario}`, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}` // Enviar el token en la cabecera
+                'Authorization': `Bearer ${token}` 
             }
         });
 
@@ -102,14 +113,16 @@ async function obtenerDatosUsuario(token) {
         // ... (mostrar otros datos del usuario en el dashboard)
     } catch (error) {
         console.error("Error al obtener datos del usuario:", error);
-        // Manejar el error (mostrar un mensaje al usuario, redirigir, etc.)
     }
 }
 
-// Obtener la información de salud del usuario
+
+// --- Obtener la información de salud ---
 async function obtenerInformacionSalud(token) {
+    const idUsuario = localStorage.getItem('idUsuario'); // Obtener el id del usuario
+
     try {
-        const response = await fetch(API_BASE_URL + '/salud', {
+        const response = await fetch(`${API_BASE_URL}/salud/${idUsuario}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -124,7 +137,6 @@ async function obtenerInformacionSalud(token) {
 
     } catch (error) {
         console.error("Error al obtener información de salud:", error);
-        // Manejar el error 
     }
 }
 
